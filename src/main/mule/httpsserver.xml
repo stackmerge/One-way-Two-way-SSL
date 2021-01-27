@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:tls="http://www.mulesoft.org/schema/mule/tls" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="abffb6fd-c836-419a-a2ab-92abec5f218b" >
+		<http:listener-connection host="0.0.0.0" port="8081" protocol="HTTPS">
+			<tls:context >
+				<tls:trust-store path="servertruststore.jks" password="password" type="jks" />
+				<tls:key-store type="jks" path="serverkeystore.jks" alias="server" keyPassword="password" password="password" />
+			</tls:context>
+		</http:listener-connection>
+	</http:listener-config>
+	<flow name="usinghttpsFlow" doc:id="3674c65a-04de-4e73-a6ed-c510ae4fde63" >
+		<http:listener doc:name="GET /server" doc:id="b052074f-8bf5-46aa-9811-8dd4bc7309ad" config-ref="HTTP_Listener_config" path="/server"/>
+		<set-payload value="#['Hello CA!!!']" doc:name="Set Payload" doc:id="567474a0-d8e0-404e-8456-d0dfcdf8ab53" mimeType="text/plain"/>
+	</flow>
+	
+</mule>

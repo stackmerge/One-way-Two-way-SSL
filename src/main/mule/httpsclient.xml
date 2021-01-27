@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ftp="http://www.mulesoft.org/schema/mule/ftp" xmlns:tls="http://www.mulesoft.org/schema/mule/tls"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd
+http://www.mulesoft.org/schema/mule/ftp http://www.mulesoft.org/schema/mule/ftp/current/mule-ftp.xsd">
+	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="e84b3aba-c644-4100-87f0-02dbaac8b5c5" >
+		<http:request-connection host="localhost" port="8081" protocol="HTTPS">
+			<tls:context >
+				<tls:trust-store path="clienttruststore.jks" password="password" type="jks" />
+				<tls:key-store type="jks" path="clientkeystore.jks" alias="client" keyPassword="password" password="password" />
+			</tls:context>
+		</http:request-connection>
+	</http:request-config>
+	<http:listener-config name="HTTP_Listener_config1" doc:name="HTTP Listener config" doc:id="ba4d7073-8313-4ac3-9661-adb811141f35" >
+		<http:listener-connection host="0.0.0.0" port="8082" >
+		</http:listener-connection>
+	</http:listener-config>
+	<flow name="httpsclientFlow" doc:id="a3487051-1697-44df-b330-08f3e8251380" >
+		<http:listener doc:name="GET /client" doc:id="3b026e4b-0b45-408e-9a25-196b3c3b8089" config-ref="HTTP_Listener_config1" path="/client"/>
+		<http:request method="GET" doc:name="Request" doc:id="88db7e14-a82d-43dd-9f6d-754235f21518" config-ref="HTTP_Request_configuration" path="/server" />
+		<logger level="INFO" doc:name="Logger" doc:id="aca38931-aef0-4f63-8990-64b5c8aeef68" />
+	</flow>
+</mule>
